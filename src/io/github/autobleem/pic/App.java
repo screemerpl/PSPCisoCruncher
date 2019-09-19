@@ -6,7 +6,6 @@
 package io.github.autobleem.pic;
 
 import io.github.autobleem.pic.mt.ProcessingJob;
-import io.github.autobleem.pic.mt.CisoExpandWorker;
 import io.github.autobleem.pic.mt.ProcessingWorker;
 import io.github.autobleem.pic.mt.WorkerFactory;
 import javafx.application.Application;
@@ -80,7 +79,7 @@ public class App extends Application {
     
     @Override
     public void start(Stage stage) {
-        ProcessingWorker pw = WorkerFactory.getWorker("C:\\Users\\artur.jakubowicz\\bionicpup32-8.0-uefi.iso");
+        ProcessingWorker pw = WorkerFactory.getWorker("/Users/screemer/0471 - Tomb Raider - Legend (USA) (v1.02).iso");
         job1=new ProcessingJob(pw);
         job1.start();
         
