@@ -24,8 +24,16 @@ public class Util {
     }
     public static boolean isCISO(String file)
     {
-        CisoReader reader = new CisoReader();
-        return reader.init(file);
+        try {
+            URandomAccessFile raf = new URandomAccessFile(file, "r");
+            String ciso = raf.readString(4);
+            return ciso.equals("CISO");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
     public static boolean isISO(String file)
     {

@@ -80,7 +80,7 @@ public class App extends Application {
     
     @Override
     public void start(Stage stage) {
-        ProcessingWorker pw = WorkerFactory.getWorker("/Users/screemer/0471 - Tomb Raider - Legend (USA) (v1.02).iso");
+        ProcessingWorker pw = WorkerFactory.getWorker("C:\\Users\\artur.jakubowicz\\bionicpup32-8.0-uefi.iso");
         job1=new ProcessingJob(pw);
         job1.start();
         

@@ -27,7 +27,7 @@ public class CisoCompressWorker implements ProcessingWorker {
         String outputName = Util.getFilenameWithoutExtension(filename) + ".cso";
         System.out.println(outputName);
         writer = new CisoWriter();
-        writer.init(outputName);
+        writer.init(outputName,6,reader.getTotalBlocks()*2048);
     }
 
     @Override
