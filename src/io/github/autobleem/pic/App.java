@@ -5,8 +5,11 @@
  */
 package io.github.autobleem.pic;
 
+import io.github.autobleem.pic.mt.ProcessingJob;
+import io.github.autobleem.pic.mt.CisoExpandWorker;
+import io.github.autobleem.pic.mt.ProcessingWorker;
+import io.github.autobleem.pic.mt.WorkerFactory;
 import javafx.application.Application;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -77,8 +80,8 @@ public class App extends Application {
     
     @Override
     public void start(Stage stage) {
-        MockWorker worker= new MockWorker();
-        job1=new ProcessingJob("TEST",worker);
+        ProcessingWorker pw = WorkerFactory.getWorker("/Users/screemer/0471 - Tomb Raider - Legend (USA) (v1.02).iso");
+        job1=new ProcessingJob(pw);
         job1.start();
         
         buildLayout();
