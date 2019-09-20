@@ -32,19 +32,21 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-
 public class ProgressElement extends VBox {
 
+    private String fullName;
     private Label filename;
     private Label progressText;
     private double percentage;
@@ -63,19 +65,19 @@ public class ProgressElement extends VBox {
     public void setJob(Job job) {
         this.job = job;
     }
-    
-    public void enableStop()
-    {
+
+    public void enableStop() {
         stopButton.setDisable(false);
     }
-    public void disableStop()
-    {
+
+    public void disableStop() {
         stopButton.setDisable(true);
     }
-    
-    
-    public ProgressElement(String name, String text) {
+
+    public ProgressElement(String name, String text, String fullName) {
+        
         super(10.0);
+        this.fullName = fullName;
         Image img = new Image(getClass().getResource("/remove.png").toExternalForm());
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(5, 5, 5, 5));
@@ -90,12 +92,12 @@ public class ProgressElement extends VBox {
         pb.setMinWidth(200);
         VBox box = new VBox();
         box.setSpacing(10.0);
-        box.setMaxWidth(200.0);
-        box.setMinWidth(200.0);
+        box.setMaxWidth(220.0);
+        box.setMinWidth(220.0);
 
         box.getChildren().addAll(filename, progressText, pb);
         hbox.getChildren().add(box);
-       
+
         stopButton = new Button("Stop");
         stopButton.setDisable(true);
         stopButton.setGraphic(new ImageView(img));
@@ -105,12 +107,24 @@ public class ProgressElement extends VBox {
             @Override
             public void handle(ActionEvent e) {
                 job.terminate();
-              
-                App.queue.remove(this);
-                  
+
+                for (Job job:App.queue)
+                {
+                    if (job.getFilename().equals(fullName))
+                    {
+                        App.queue.remove(job);
+                        break;
+                    }
+                }
+
             }
         });
-        hbox.getChildren().add(stopButton);
+        StackPane pane = new StackPane();
+        pane.setPrefSize(50, 50); //set a default size for your stackpane
+        pane.setPadding(new Insets( 0, 0, 0, 20));
+
+        pane.getChildren().add(stopButton);
+        hbox.getChildren().add(pane);
         this.getChildren().addAll(hbox);
         this.getChildren().add(new Separator());
     }

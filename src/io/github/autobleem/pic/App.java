@@ -176,7 +176,7 @@ public class App extends Application {
                         {
                             ProgressElement pe = progressPane.addElement(f.getName(), job);
                             job.setPe(pe);
-                            job.start();
+                           // job.start();
                         }
                     }
                     

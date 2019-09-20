@@ -50,7 +50,7 @@ public class ProgressPane extends ScrollPane {
     public ProgressElement addElement(String filename, Job job)
     {
          this.setContent(scrollContent);
-        ProgressElement pe = new ProgressElement(filename,job.getProgressText());
+        ProgressElement pe = new ProgressElement(filename,job.getProgressText(), job.getFilename());
         pe.setJob(job);
         scrollContent.getChildren().add(pe);
         return pe;

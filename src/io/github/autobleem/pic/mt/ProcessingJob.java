@@ -108,16 +108,14 @@ public class ProcessingJob implements Runnable {
             });
 
         }
-        if (state == State.CANCELLED)
-        {
-             Platform.runLater(new Runnable() {
+        if (state == State.CANCELLED) {
+            Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                  pe.getProgressText().setText("Terminated");
+                    pe.getProgressText().setText("Terminated");
                 }
             });
-             
-            
+
         }
     }
 
@@ -174,8 +172,9 @@ public class ProcessingJob implements Runnable {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        pe.disableStop();
-                       
+                        if (pe != null) {
+                            pe.disableStop();
+                        }
                     }
                 });
             }
