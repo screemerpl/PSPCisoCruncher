@@ -17,12 +17,57 @@
 package io.github.autobleem.pic;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
  * @author artur.jakubowicz
  */
 public class JobQueue extends ArrayList<Job>{
+    private TimerTask updateTask;
+    private Timer timer;
+    public JobQueue() {
+        timer = new Timer(true);
+        final JobQueue thisQueue = this;
+        updateTask = new TimerTask() {
+            @Override
+            public void run() {
+                int running = getRunningTasks();
+                int threads = Config.threads;
+                int freeThreads = threads-running;
+                if (freeThreads>0)
+                {
+                     for (Job job: thisQueue)
+                     {
+                         if (job.isNew())
+                         {
+                             if (freeThreads>0)
+                             {
+                             job.start();
+                             freeThreads--;
+                             }
+                         }
+                     }
+                   
+                }
+               
+            }
+        };
+        timer.schedule(updateTask, 0, 500);
+        
+    }
+    
+    public int getRunningTasks()
+    {
+        int val=0;
+        for (Job job:this)
+        {
+           if (job.isRunning()) val++;
+        }
+        return val;
+    }
+    
     public Job schedule(String fileName)
     {
         for (Job job:App.queue)

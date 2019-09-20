@@ -57,6 +57,14 @@ public class Job {
         job.setPe(pe);
         job.start();
     }
+    public boolean isRunning()
+    {
+        return job.getState()==ProcessingJob.State.RUNNING;
+    }
+    public boolean isNew()
+    {
+        return job.getState()==ProcessingJob.State.NEW;
+    }
     public void terminate()
     {
         job.terminate();

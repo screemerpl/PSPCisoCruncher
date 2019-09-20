@@ -127,7 +127,7 @@ public class App extends Application {
         configPane = new ConfigPane();
 
         mainBorder.setTop(buildToolBar());
-        mainBorder.setCenter(progressPane);
+        mainBorder.setCenter(aboutPane);
     }
 
     @Override
