@@ -25,6 +25,13 @@ import java.util.ArrayList;
 public class JobQueue extends ArrayList<Job>{
     public Job schedule(String fileName)
     {
+        for (Job job:App.queue)
+        {
+            if (job.getFilename().equals(fileName))
+            {
+                return null;
+            }
+        }
         Job job = new Job();
         if (job.schedule(fileName))
         {

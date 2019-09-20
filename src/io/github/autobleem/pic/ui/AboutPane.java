@@ -24,10 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-/**
- *
- * @author artur.jakubowicz
- */
+
 public class AboutPane extends VBox {
     private ImageView image;
     private Label programName;

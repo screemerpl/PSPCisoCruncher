@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 artur.jakubowicz
+ * Copyright (C) 2019 Screemer/AutoBleem Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author artur.jakubowicz
- */
+
 public class Config {
     public static int compressionLevel = 6;
     public static int threads = 4;

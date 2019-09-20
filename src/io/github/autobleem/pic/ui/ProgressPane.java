@@ -16,7 +16,6 @@
  */
 package io.github.autobleem.pic.ui;
 
-import io.github.autobleem.pic.App;
 import io.github.autobleem.pic.Job;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,10 +25,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-/**
- *
- * @author artur.jakubowicz
- */
+
 public class ProgressPane extends ScrollPane {
 
     boolean emptyQueue = true;

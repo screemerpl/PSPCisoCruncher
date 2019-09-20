@@ -17,7 +17,6 @@
 package io.github.autobleem.pic;
 
 import io.github.autobleem.pic.mt.ProcessingJob;
-import static io.github.autobleem.pic.mt.ProcessingJob.getDurationBreakdown;
 import io.github.autobleem.pic.mt.ProcessingWorker;
 import io.github.autobleem.pic.mt.WorkerFactory;
 import io.github.autobleem.pic.ui.ProgressElement;
@@ -31,13 +30,20 @@ public class Job {
     private ProcessingJob job;
     private ProcessingWorker worker;
     private ProgressElement pe;
+    private String filename;
 
+    public String getFilename() {
+        return filename;
+    }
+
+    
     public void setPe(ProgressElement pe) {
         this.pe = pe;
     }
     
     public boolean schedule(String filename)
     {
+        this.filename = filename;
         worker = WorkerFactory.getWorker(filename);
         if (worker == null)
         {

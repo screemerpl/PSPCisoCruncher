@@ -1,7 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2019 Screemer/AutoBleem Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package io.github.autobleem.pic.mt;
 
@@ -11,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.concurrent.Worker;
 
 /**
  *
@@ -68,7 +78,16 @@ public class ProcessingJob implements Runnable {
                 percentage = 100.0f;
                 estimatedEnd = 0;
                 worker.finish();
-                pe.getProgressText().setText("DONE!");
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        pe.getProgressText().setText("Done");
+                        pe.getPb().setProgress(getPercentage() / 100.0);
+                        pe.disableStop();
+                    }
+
+                });
+
                 return;
             }
             percentage = (worker.getProcessedItems() * 1.0f / worker.getTotalItems() * 1.0f) * 100.0f;
@@ -79,14 +98,24 @@ public class ProcessingJob implements Runnable {
             estimatedEnd = estimatedEnd - milis;
 
             DecimalFormat df = new DecimalFormat("0.00");
-            //System.out.println("Completed: " + df.format(percentage) + "%  Approx End In:" + getDurationBreakdown(estimatedEnd));
+
             Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-              pe.getProgressText().setText("Progress: " + df.format(getPercentage()) + "%   Remaining time:" + getDurationBreakdown(getEstimatedEnd()));
-              pe.getPb().setProgress(getPercentage()/100.0);
-            }
-          });    
+                @Override
+                public void run() {
+                    pe.getProgressText().setText("Progress: " + df.format(getPercentage()) + "%   Remaining time:" + getDurationBreakdown(getEstimatedEnd()));
+                    pe.getPb().setProgress(getPercentage() / 100.0);
+                }
+            });
+
+        }
+        if (state == State.CANCELLED)
+        {
+             Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                  pe.getProgressText().setText("Terminated");
+                }
+            });
              
             
         }
@@ -112,7 +141,6 @@ public class ProcessingJob implements Runnable {
         this.pe = pe;
     }
 
-    
     public ProcessingJob(ProcessingWorker pw) {
         this.filename = pw.getFileName();
         this.percentage = 0.0f;
@@ -129,6 +157,12 @@ public class ProcessingJob implements Runnable {
         estimatedEnd = startedTime;
         state = State.RUNNING;
         th.start();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                pe.enableStop();
+            }
+        });
     }
 
     public void terminate() {
@@ -137,6 +171,13 @@ public class ProcessingJob implements Runnable {
                 state = State.CANCELLED;
                 th.join();
                 worker.terminate();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        pe.disableStop();
+                       
+                    }
+                });
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(ProcessingJob.class.getName()).log(Level.SEVERE, null, ex);

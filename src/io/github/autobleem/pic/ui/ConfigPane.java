@@ -26,10 +26,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-/**
- *
- * @author artur.jakubowicz
- */
+
 public class ConfigPane extends VBox {
 
     private Slider compressionLevelSlider = new Slider();
@@ -38,7 +35,7 @@ public class ConfigPane extends VBox {
     public ConfigPane() {
         super();
 
-        compressionLevelSlider.setMax(10);
+        compressionLevelSlider.setMax(9);
         compressionLevelSlider.setMin(0);
         compressionLevelSlider.setValue(Config.compressionLevel);
         compressionLevelSlider.setMajorTickUnit(1);
@@ -72,18 +69,29 @@ public class ConfigPane extends VBox {
                 Config.save();
             }
         });
-        Font font = new Font("Arial", 13);
+        Font font = new Font("Arial", 15);
+        Font font2 = new Font("Arial", 10);
+        
         Label clLabel = new Label("Compression Level");
         clLabel.setFont(font);
         Label clInfo = new Label("Sets compression complexity from 0-none to 10-max");
-
+        clInfo.setFont(font2);
         Label thLabel = new Label("Max threads");
         thLabel.setFont(font);
         Label thInfo = new Label("Sets number of files to process at a time.");
-
+        thInfo.setFont(font2);
+        
+        Label delLabel = new Label("Remove complete");
+        delLabel.setFont(font);
+        Label delInfo = new Label("Remove input file after completion");
+        delInfo.setFont(font2);
+        
         this.setPadding(new Insets(10, 10, 10, 10));
         this.getChildren().addAll(clLabel, clInfo, compressionLevelSlider, new Separator());
         this.getChildren().addAll(thLabel, thInfo, threadSlider, new Separator());
+         this.getChildren().addAll(delLabel, delInfo, new Separator());
+        
+        
 
     }
 

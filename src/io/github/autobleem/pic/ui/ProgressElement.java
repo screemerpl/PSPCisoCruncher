@@ -30,6 +30,8 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -40,10 +42,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-/**
- *
- * @author artur.jakubowicz
- */
+
 public class ProgressElement extends VBox {
 
     private Label filename;
@@ -65,11 +64,19 @@ public class ProgressElement extends VBox {
         this.job = job;
     }
     
-    
+    public void enableStop()
+    {
+        stopButton.setDisable(false);
+    }
+    public void disableStop()
+    {
+        stopButton.setDisable(true);
+    }
     
     
     public ProgressElement(String name, String text) {
         super(10.0);
+        Image img = new Image(getClass().getResource("/remove.png").toExternalForm());
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(5, 5, 5, 5));
         hbox.setBorder(new Border(new BorderStroke(new Color(0.10, 0.10, 0.10, 0.100),
@@ -88,20 +95,19 @@ public class ProgressElement extends VBox {
 
         box.getChildren().addAll(filename, progressText, pb);
         hbox.getChildren().add(box);
-
+       
         stopButton = new Button("Stop");
-        GlyphIcon currentIcon = GlyphsBuilder.create(FontAwesomeIconView.class)
-                .glyph(FontAwesomeIcon.TRASH_ALT)
-                .build();
-        stopButton.setGraphic(currentIcon);
+        stopButton.setDisable(true);
+        stopButton.setGraphic(new ImageView(img));
         stopButton.setPadding(new Insets(5, 5, 5, 5));
         stopButton.setContentDisplay(ContentDisplay.TOP);
         stopButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 job.terminate();
-                stopButton.setVisible(false);
+              
                 App.queue.remove(this);
+                  
             }
         });
         hbox.getChildren().add(stopButton);
