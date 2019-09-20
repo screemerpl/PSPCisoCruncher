@@ -5,10 +5,12 @@
  */
 package io.github.autobleem.pic.mt;
 
+import io.github.autobleem.pic.ui.ProgressElement;
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.concurrent.Worker;
 
 /**
@@ -17,7 +19,7 @@ import javafx.concurrent.Worker;
  */
 public class ProcessingJob implements Runnable {
 
-    private enum State {
+    public enum State {
         NEW,
         RUNNING,
         FINISHED,
@@ -31,6 +33,7 @@ public class ProcessingJob implements Runnable {
     private State state;
     private Thread th;
     private ProcessingWorker worker;
+    private ProgressElement pe;
 
     public static String getDurationBreakdown(long millis) {
         if (millis < 0) {
@@ -65,6 +68,7 @@ public class ProcessingJob implements Runnable {
                 percentage = 100.0f;
                 estimatedEnd = 0;
                 worker.finish();
+                pe.getProgressText().setText("DONE!");
                 return;
             }
             percentage = (worker.getProcessedItems() * 1.0f / worker.getTotalItems() * 1.0f) * 100.0f;
@@ -75,7 +79,16 @@ public class ProcessingJob implements Runnable {
             estimatedEnd = estimatedEnd - milis;
 
             DecimalFormat df = new DecimalFormat("0.00");
-            System.out.println("Completed: " + df.format(percentage) + "%  Approx End In:" + getDurationBreakdown(estimatedEnd));
+            //System.out.println("Completed: " + df.format(percentage) + "%  Approx End In:" + getDurationBreakdown(estimatedEnd));
+            Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+              pe.getProgressText().setText("Progress: " + df.format(getPercentage()) + "%   Remaining time:" + getDurationBreakdown(getEstimatedEnd()));
+              pe.getPb().setProgress(getPercentage()/100.0);
+            }
+          });    
+             
+            
         }
     }
 
@@ -95,6 +108,11 @@ public class ProcessingJob implements Runnable {
         return state;
     }
 
+    public void setPe(ProgressElement pe) {
+        this.pe = pe;
+    }
+
+    
     public ProcessingJob(ProcessingWorker pw) {
         this.filename = pw.getFileName();
         this.percentage = 0.0f;

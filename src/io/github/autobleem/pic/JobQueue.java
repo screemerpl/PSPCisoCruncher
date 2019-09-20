@@ -14,35 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.autobleem.pic.ui;
+package io.github.autobleem.pic;
 
-import io.github.autobleem.pic.App;
-import io.github.autobleem.pic.Job;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
+import java.util.ArrayList;
 
 /**
  *
  * @author artur.jakubowicz
  */
-public class ProgressPane extends ScrollPane {
-
-    boolean emptyQueue = true;
-    VBox scrollContent;
-    
-    
-    public ProgressPane() {
-        super();
-        scrollContent = new VBox();
-        this.setContent(scrollContent);
-    }
-    public ProgressElement addElement(String filename, Job job)
+public class JobQueue extends ArrayList<Job>{
+    public Job schedule(String fileName)
     {
-        ProgressElement pe = new ProgressElement(filename,job.getProgressText());
-        pe.setJob(job);
-        scrollContent.getChildren().add(pe);
-        return pe;
+        Job job = new Job();
+        if (job.schedule(fileName))
+        {
+            this.add(job);
+            return job;
+        }
+        return null;
+        
     }
-
 }
