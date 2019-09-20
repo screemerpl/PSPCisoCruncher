@@ -37,9 +37,9 @@ public class App extends Application {
         
         progressPane = new ScrollPane(scrollContent);
          progressPane.setPrefSize(120, 120);
-        for (int i=0;i<1000;i++)
+        for (int i=0;i<100;i++)
         {
-            Label l=new Label("AAAAAAAAA");
+            Label l=new Label("AXAXAXA");
             scrollContent.getChildren().add(l);
         }
         
@@ -73,18 +73,19 @@ public class App extends Application {
     @Override
     public void stop() throws Exception {
         super.stop(); 
-        job1.terminate();
+      //  job1.terminate();
     }
 
     
     @Override
     public void start(Stage stage) {
-        ProcessingWorker pw = WorkerFactory.getWorker("/Users/screemer/0471 - Tomb Raider - Legend (USA) (v1.02).iso");
+        /*
+        ProcessingWorker pw = WorkerFactory.getWorker("/Users/screemer/0369 - OutRun 2006 - Coast 2 Coast (Europe) (En,Fr,De,Es,It) (v1.01).iso");
         job1=new ProcessingJob(pw);
         job1.start();
-        
+        */
         buildLayout();
-        stage.setTitle("JavaFX Welcome");
+        stage.setTitle("PSPCisoCruncher");
         Scene scene = new Scene(mainBorder, 320, 500);
         mainBorder.setStyle("");
         stage.setScene(scene);
