@@ -14,6 +14,7 @@ import io.github.autobleem.pic.mt.ProcessingWorker;
 import io.github.autobleem.pic.mt.WorkerFactory;
 import io.github.autobleem.pic.ui.AboutPane;
 import io.github.autobleem.pic.ui.ConfigPane;
+import io.github.autobleem.pic.ui.ProgressPane;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -40,24 +41,12 @@ import javafx.stage.Stage;
 public class App extends Application {
     
     private BorderPane mainBorder = new BorderPane();
-    ;
-    private ScrollPane progressPane;
+    private Node progressPane;
     private Node configPane;
     private Node aboutPane;
     
     ProcessingJob job1;
-    
-    private void buildProgressPane() {
-        VBox scrollContent = new VBox(10);
-        
-        progressPane = new ScrollPane(scrollContent);
-        progressPane.setPrefSize(120, 120);
-        for (int i = 0; i < 100; i++) {
-            Label l = new Label("AXAXAXA");
-            scrollContent.getChildren().add(l);
-        }
-        
-    }
+   
     
     private Node buildToolBar() {
         
@@ -124,13 +113,12 @@ public class App extends Application {
     }
     
     private void buildLayout() {
-        buildProgressPane();
+        progressPane = new ProgressPane();
         aboutPane = new AboutPane();
         configPane = new ConfigPane();
-        
+       
         mainBorder.setTop(buildToolBar());
-        mainBorder.setCenter(progressPane);
-        
+        mainBorder.setCenter(progressPane);    
     }
     
     @Override

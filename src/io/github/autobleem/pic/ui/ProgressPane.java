@@ -16,12 +16,21 @@
  */
 package io.github.autobleem.pic.ui;
 
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
 /**
  *
  * @author artur.jakubowicz
  */
-public class ProgressPane extends VBox {
-    
+public class ProgressPane extends ScrollPane {
+    boolean emptyQueue = true;
+    public ProgressPane() {
+        super();
+        VBox scrollContent = new VBox(10);
+
+      
+       
+        this.setContent(scrollContent);
+    }
 }
