@@ -28,7 +28,7 @@ public class Config {
     public static int threads = 4;
     public static boolean removeInput = false;
     
-    public static final String VERSION = "0.1-master"; 
+    public static final String VERSION = "1.0.0-alpha"; 
     
     public static void load()
     {

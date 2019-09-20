@@ -16,7 +16,9 @@
  */
 package io.github.autobleem.pic.mt;
 
+import io.github.autobleem.pic.Config;
 import io.github.autobleem.pic.ui.ProgressElement;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -88,6 +90,13 @@ public class ProcessingJob implements Runnable {
 
                 });
 
+                if (state == State.FINISHED) {
+                    if (Config.removeInput) {
+                        System.out.println("Removing: " + filename);
+                        File f= new File(worker.getFileName());
+                        f.delete();
+                    }
+                }
                 return;
             }
             percentage = (worker.getProcessedItems() * 1.0f / worker.getTotalItems() * 1.0f) * 100.0f;
@@ -117,6 +126,7 @@ public class ProcessingJob implements Runnable {
             });
 
         }
+
     }
 
     public synchronized float getPercentage() {

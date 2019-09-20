@@ -29,9 +29,11 @@ public class CisoCompressWorker implements ProcessingWorker {
     private IsoReader reader;
     private CisoWriter writer;
     private int currentBlock = 0;
+    private String filename;
 
     @Override
     public void init(String filename) {
+        this.filename = filename;
         reader = new IsoReader();
         reader.init(filename);
         String outputName = Util.getFilenameWithoutExtension(filename) + ".cso";
@@ -75,7 +77,7 @@ public class CisoCompressWorker implements ProcessingWorker {
 
     @Override
     public String getFileName() {
-        return "";
+        return filename;
     }
 
 }

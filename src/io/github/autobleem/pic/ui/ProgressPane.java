@@ -17,8 +17,11 @@
 package io.github.autobleem.pic.ui;
 
 import io.github.autobleem.pic.Job;
+import io.github.autobleem.pic.mt.ProcessingJob;
+import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -49,11 +52,36 @@ public class ProgressPane extends ScrollPane {
     }
     public ProgressElement addElement(String filename, Job job)
     {
-         this.setContent(scrollContent);
+        this.setContent(scrollContent);
         ProgressElement pe = new ProgressElement(filename,"Awaiting free thread", job.getFilename());
         pe.setJob(job);
         scrollContent.getChildren().add(pe);
         return pe;
+    }
+    public void removeDeadElements()
+    {
+        ArrayList<Node> dead = new ArrayList<>();
+        for (Node pe:scrollContent.getChildren())
+        {
+            ProgressElement peInst = (ProgressElement) pe;
+            if (peInst.getJob().getState() == ProcessingJob.State.FINISHED)
+            {
+                dead.add(pe);
+            }
+              if (peInst.getJob().getState() == ProcessingJob.State.CANCELLED)
+            {
+                dead.add(pe);
+            }
+            
+               
+        }
+        
+            scrollContent.getChildren().removeAll(dead);
+            if (scrollContent.getChildren().isEmpty())
+            {
+                this.setContent(initialContent);
+            }
+       
     }
 
 }

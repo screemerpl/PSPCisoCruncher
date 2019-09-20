@@ -66,6 +66,11 @@ public class ProgressElement extends VBox {
         this.job = job;
     }
 
+    public Job getJob() {
+        return job;
+    }
+    
+
     public void enableStop() {
         stopButton.setDisable(false);
     }
