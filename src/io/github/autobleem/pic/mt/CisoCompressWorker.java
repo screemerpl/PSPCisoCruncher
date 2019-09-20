@@ -5,11 +5,10 @@
  */
 package io.github.autobleem.pic.mt;
 
+import io.github.autobleem.pic.Config;
 import io.github.autobleem.pic.Util;
 import io.github.autobleem.pic.ciso.CisoWriter;
 import io.github.autobleem.pic.ciso.IsoReader;
-import io.github.autobleem.pic.ciso.IsoWriter;
-
 /**
  *
  * @author screemer
@@ -27,7 +26,7 @@ public class CisoCompressWorker implements ProcessingWorker {
         String outputName = Util.getFilenameWithoutExtension(filename) + ".cso";
         System.out.println(outputName);
         writer = new CisoWriter();
-        writer.init(outputName,6,reader.getTotalBlocks()*2048);
+        writer.init(outputName,Config.compressionLevel,reader.getTotalBlocks()*2048);
     }
 
     @Override

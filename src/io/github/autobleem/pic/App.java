@@ -8,12 +8,19 @@ package io.github.autobleem.pic;
 import io.github.autobleem.pic.mt.ProcessingJob;
 import io.github.autobleem.pic.mt.ProcessingWorker;
 import io.github.autobleem.pic.mt.WorkerFactory;
+import io.github.autobleem.pic.ui.AboutPane;
+import io.github.autobleem.pic.ui.ConfigPane;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -27,42 +34,63 @@ public class App extends Application {
 
     private BorderPane mainBorder;
     private ScrollPane progressPane;
-    
-      ProcessingJob job1;
-    
+    private Node configPane;
+    private Node aboutPane;
 
-    private void buildProgressPane()
-    {
-        VBox scrollContent=new VBox(10);
-        
+    ProcessingJob job1;
+
+    private void buildProgressPane() {
+        VBox scrollContent = new VBox(10);
+
         progressPane = new ScrollPane(scrollContent);
-         progressPane.setPrefSize(120, 120);
-        for (int i=0;i<100;i++)
-        {
-            Label l=new Label("AXAXAXA");
+        progressPane.setPrefSize(120, 120);
+        for (int i = 0; i < 100; i++) {
+            Label l = new Label("AXAXAXA");
             scrollContent.getChildren().add(l);
         }
-        
-        
+
     }
-    
+
     private void buildLayout() {
         buildProgressPane();
-        BorderPane borderPane = new BorderPane();
+        aboutPane = new AboutPane();
+        configPane = new ConfigPane();
 
-      
+        BorderPane borderPane = new BorderPane();
 
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
-    
 
-        Button buttonCurrent = new Button("Current");
+        Button buttonCurrent = new Button("Progress");
         buttonCurrent.setPrefSize(100, 20);
 
-        Button buttonProjected = new Button("Projected");
-        buttonProjected.setPrefSize(100, 20);
-        hbox.getChildren().addAll(buttonCurrent, buttonProjected);
+        Button buttonConfig = new Button("Properties");
+        buttonConfig.setPrefSize(100, 20);
+
+        Button buttonAbout = new Button("About");
+        buttonAbout.setPrefSize(100, 20);
+        hbox.getChildren().addAll(buttonCurrent, buttonConfig, buttonAbout);
+
+        buttonCurrent.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+               borderPane.setCenter(progressPane);
+            }
+        });
+
+        buttonConfig.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                  borderPane.setCenter(configPane);
+            }
+        });
+        buttonAbout.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+              borderPane.setCenter(aboutPane);
+            }
+        });
 
         borderPane.setTop(hbox);
         borderPane.setCenter(progressPane);
@@ -72,27 +100,29 @@ public class App extends Application {
 
     @Override
     public void stop() throws Exception {
-        super.stop(); 
-      //  job1.terminate();
+        super.stop();
+        //  job1.terminate();
     }
 
-    
     @Override
     public void start(Stage stage) {
+        setUserAgentStylesheet(STYLESHEET_MODENA);
+      
         /*
         ProcessingWorker pw = WorkerFactory.getWorker("/Users/screemer/0369 - OutRun 2006 - Coast 2 Coast (Europe) (En,Fr,De,Es,It) (v1.01).iso");
         job1=new ProcessingJob(pw);
         job1.start();
-        */
+         */
         buildLayout();
         stage.setTitle("PSPCisoCruncher");
         Scene scene = new Scene(mainBorder, 320, 500);
-        mainBorder.setStyle("");
+        scene.getStylesheets().add(getClass().getResource("/dark.css").toExternalForm());
+
         stage.setScene(scene);
+        stage.setMinWidth(320);
+        stage.setMaxWidth(320);
         stage.show();
-        
-       
-      
+
     }
 
     /**

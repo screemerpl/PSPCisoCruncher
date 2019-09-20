@@ -118,10 +118,10 @@ public class CisoReader {
             
             if (header.getCompressed()[sector])
             {
-                 Inflater inf = new Inflater(true);
+                    Inflater inf = new Inflater(true);
                     inf.setInput(compResult);
                     byte[] result = new byte[header.getBlockSize().intValue()];
-                    int resultSize = inf.inflate(result);
+                    inf.inflate(result);
                     inf.end();
                     return result;
             } else
