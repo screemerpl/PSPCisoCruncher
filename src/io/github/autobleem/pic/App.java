@@ -172,7 +172,7 @@ public class App extends Application {
                     
                     success = true;
                 }
-            
+                mainBorder.setCenter(progressPane);
                 event.setDropCompleted(success);
                 event.consume();
                 
