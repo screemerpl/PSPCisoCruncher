@@ -126,17 +126,15 @@ public class App extends Application {
         for (Job job : App.queue) {
             job.terminate();
         }
+        Config.save();
     }
 
     @Override
     public void start(Stage stage) {
+        Config.load();
         setUserAgentStylesheet(STYLESHEET_MODENA);
 
-        /*
-        ProcessingWorker pw = WorkerFactory.getWorker("/Users/screemer/0369 - OutRun 2006 - Coast 2 Coast (Europe) (En,Fr,De,Es,It) (v1.01).iso");
-        job1=new ProcessingJob(pw);
-        job1.start();
-         */
+   
         buildLayout();
         stage.setTitle("PSPCisoCruncher");
 

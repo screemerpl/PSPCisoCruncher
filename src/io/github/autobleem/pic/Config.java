@@ -16,6 +16,12 @@
  */
 package io.github.autobleem.pic;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author artur.jakubowicz
@@ -26,4 +32,47 @@ public class Config {
     public static boolean removeInput = false;
     
     public static final String VERSION = "0.1-master"; 
+    
+    public static void load()
+    {
+        try {
+            Properties prop = new Properties();
+            FileInputStream fis = new FileInputStream("config.properties");
+            prop.load(fis);
+            fis.close();
+            if (prop.getProperty("compressionLevel")!=null)
+            {
+                compressionLevel = Integer.parseInt(prop.getProperty("compressionLevel"));
+            }
+            if (prop.getProperty("threads")!=null)
+            {
+                threads = Integer.parseInt(prop.getProperty("threads"));
+            }
+              if (prop.getProperty("removeInput")!=null)
+            {
+                removeInput = Boolean.parseBoolean(prop.getProperty("removeInput"));
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+      public static void save()
+    {
+        try {
+            Properties prop = new Properties();
+            prop.setProperty("compressionLevel", Integer.toString(compressionLevel));
+            prop.setProperty("threads", Integer.toString(threads));
+            prop.setProperty("removeInput", Boolean.toString(removeInput));
+                  FileOutputStream fis = new FileOutputStream("config.properties");
+            prop.store(fis,"PSPCisoCruncher Configuration");
+            fis.flush();
+            fis.close();
+           
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
